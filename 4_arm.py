@@ -25,7 +25,7 @@ pwm.set_pwm_freq(50)
 # pwm0_min  = 150
 # pwm0_pos  = pwm0_init
 
-angle = [90, 90, 90, 90]
+angle = [300, 300, 300, 300]
 speed = 7 # servo rotation speed.
 forward = 1
 reverse = -1
