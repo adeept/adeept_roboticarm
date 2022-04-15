@@ -202,11 +202,13 @@ def loop():
     if save_memory == 0 and value == 5 and memory_end != 1:
         save_memory = 1
         servo_angle = []
+        servo_angle.append([angle[0], angle[1], angle[2], angle[3]]) # record initial position.
         print("start!!")
     elif save_memory ==1 and value != 5:
         memory_end = 1
     elif memory_end == 1 and value ==5:
         save_memory = 0
+        servo_angle.append([angle[0], angle[1], angle[2], angle[3]]) # record end position.
         print("end!!")
     else:
         memory_end = 0
