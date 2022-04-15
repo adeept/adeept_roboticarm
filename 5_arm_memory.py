@@ -66,7 +66,7 @@ def ctrl_range(raw, max_genout, min_genout):
     return int(raw_output)
 
 def rotation(ID, direction, speed):
-    global angle, save_memory, ID_change, Temporary_angle, ID_mark,direction_mark
+    global angle, save_memory, ID_change, Temporary_angle, ID_mark,direction_mark,servo_angle
     if ID == None:
         pass
     else:
@@ -79,13 +79,14 @@ def rotation(ID, direction, speed):
         if angle[ID] <=100:
             angle[ID] = 100
         if save_memory == 1:    # Save the action of the robot arm.
-            Temporary_angle[ID] = angle[ID]
-            if ID_mark != ID or direction_mark != direction :   # Change the angle of the steering gear once and save the data once.
+            Temporary_angle = angle
+            if ID_mark != ID or direction_mark != direction :   # Change the angle of the servo once and save the data once.
                 servo_angle.append([Temporary_angle[0], Temporary_angle[1], Temporary_angle[2], Temporary_angle[3]])
                 ID_mark = ID
                 direction_mark = direction
                 print("-------------------------------")
                 print(servo_angle)
+                # print(angle)
                 print("-------------------------------")
                 print('\n')
         print(angle)
@@ -186,6 +187,7 @@ def play_memory():
     rotation_speed = 1
     current_angle = angle   # Initial angle.
     for target_angle in servo_angle:    #Read the saved servo angle value.
+        print(target_angle)
         memory_angle(0, rotation_speed, target_angle[0], current_angle[0])
         memory_angle(1, rotation_speed, target_angle[1], current_angle[1])
         memory_angle(2, rotation_speed, target_angle[2], current_angle[2])
@@ -193,12 +195,13 @@ def play_memory():
         current_angle = target_angle # Update the current servo angle.
 
 def loop():
-    global save_memory, mark, memory_end
+    global save_memory, mark, memory_end,servo_angle
     play_memory_start = 0
     value = joystick()
     # Save the action function of the robotic arm.
     if save_memory == 0 and value == 5 and memory_end != 1:
         save_memory = 1
+        servo_angle = []
         print("start!!")
     elif save_memory ==1 and value != 5:
         memory_end = 1
